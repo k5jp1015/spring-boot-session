@@ -25,11 +25,13 @@ public class GreetingRestController {
     
     @GetMapping("/hello")
     public String hello(@RequestParam Optional<String> name) {
-        if (greetingInfo.getName() == null) {
-            greetingInfo.setName(name.orElse("anonymous"));
-            greetingInfo.setCreatedAt(new Date());
-            greetingInfo.setCreatedBy(instanceName);
-        }
+    	
+    	this.setSession(name);
+//        if (greetingInfo.getName() == null) {
+//            greetingInfo.setName(name.orElse("anonymous"));
+//            greetingInfo.setCreatedAt(new Date());
+//            greetingInfo.setCreatedBy(instanceName);
+//        }
         return "Hi " + greetingInfo.getName() + ". Enter at " + greetingInfo.getCreatedAt() + " by " + greetingInfo.getCreatedBy() + " (Echo by " + instanceName + ")";
     }
 
@@ -39,5 +41,14 @@ public class GreetingRestController {
         session.invalidate();
         return "Goodbye " + name.orElse("anonymous") + " (Echo by " + instanceName + ")";
     }
+    
+    private void setSession(Optional<String> name) {
+    	if (greetingInfo.getName() == null) {
+            greetingInfo.setName(name.orElse("anonymous"));
+            greetingInfo.setCreatedAt(new Date());
+            greetingInfo.setCreatedBy(instanceName);
+        }
+		
+	}
 
 }
